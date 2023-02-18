@@ -15,6 +15,11 @@ We shall create a Jenkins Server and run a jenkins pipeline to create the cluste
 ![s3 bucket](./images/s3bucket2.png)
 
 #### Next , we shall prepare the terraform files to provision our infrastructure
+Create backend.tf
+```
+touch backend.tf
+```
+
 ```
 terraform {
   backend "s3" {
