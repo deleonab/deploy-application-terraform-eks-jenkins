@@ -7,7 +7,12 @@ We shall create a Jenkins Server and run a jenkins pipeline to create the cluste
 ![jenkins keypair](./images/pem-image.png)
 
 
-#### Next , we shall prepare tge terraform files to provision our infrastructure
+#### Next , we shall prepare the terraform files to provision our infrastructure
+#### We shall create S3 bucket in the console and then define it in our terraform code
+
+![s3 bucket](./images/s3bucket1.png)
+
+![s3 bucket](./images/s3bucket2.png)
 
 #### Let us set up the backend to host our terraform state in the cloud
 terraform {
