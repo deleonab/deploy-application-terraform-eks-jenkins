@@ -2,25 +2,26 @@ Our aim here is to use a CI/CD pipeline to deploy a Kubernetes container running
 
 We shall create a Jenkins Server and run a jenkins pipeline to create the cluster, deployments and services.
 
-1. Create a keypair jenkins-server
+## 1. Let us set up the backend to host our terraform state in the cloud
+
+### Create a keypair jenkins-server
 
 ![jenkins keypair](./images/pem-image.png)
 
-
-#### Next , we shall prepare the terraform files to provision our infrastructure
-#### We shall create S3 bucket in the console and then define it in our terraform code
+#### We shall create S3 bucket called deletus-app in the console and then define it in our terraform code
 
 ![s3 bucket](./images/s3bucket1.png)
 
 ![s3 bucket](./images/s3bucket2.png)
 
-#### Let us set up the backend to host our terraform state in the cloud
+#### Next , we shall prepare the terraform files to provision our infrastructure
 ```
 terraform {
   backend "s3" {
     bucket = "deletus-app"
     key    = "jenkins-server/terraform.tfstate"
     region = "us-east-1"
+  }
   }
 ```
 
@@ -63,3 +64,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 ```
+
