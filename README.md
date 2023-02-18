@@ -12,7 +12,7 @@ We shall create a Jenkins Server and run a jenkins pipeline to create the cluste
 #### Let us set up the backend to host our terraform state in the cloud
 terraform {
   backend "s3" {
-    bucket = "test-app"
+    bucket = "deletus-app"
     key    = "jenkins-server/terraform.tfstate"
     region = "us-east-1"
   }
