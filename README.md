@@ -15,13 +15,14 @@ We shall create a Jenkins Server and run a jenkins pipeline to create the cluste
 ![s3 bucket](./images/s3bucket2.png)
 
 #### Let us set up the backend to host our terraform state in the cloud
+```
 terraform {
   backend "s3" {
     bucket = "deletus-app"
     key    = "jenkins-server/terraform.tfstate"
     region = "us-east-1"
   }
-
+```
 
 
 #### Don't forget to include a .gitignore file to avoid pushing our sensitive files to our git repository
