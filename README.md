@@ -108,11 +108,12 @@ resource "aws_instance" "myapp-server" {
 
 ```
 ### Create userdata script for jenkins instance
+### This will install jenkins, git, java, terraform, and kubectl
 
 ```
 #!/bin/bash
 
-# install jenkins
+# install jenkins 
 
 sudo yum update
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
