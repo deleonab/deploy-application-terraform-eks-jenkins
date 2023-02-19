@@ -141,3 +141,11 @@ sudo chmod +x ./kubectl
 sudo mkdir -p $HOME/bin && sudo cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
 
 ```
+
+### We will create outputs.tf to output the public ip address of our jenkins server
+
+```
+output "ec2_public_ip" {
+  value = aws_instance.myapp-server.public_ip
+}
+```
