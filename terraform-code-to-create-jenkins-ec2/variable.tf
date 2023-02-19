@@ -6,24 +6,22 @@ variable "avail_zone" {
 
 variable "subnet_cidr_block " {
   description = "cidr block for the vpc"
-  type = ""
   default="10.0.1.0/24"
 }
 
 variable "vpc_cidr_block " {
   description = "cidr block for the subnet"
-  type = ""
   default="10.0.0.0/16"
 }
 
 variable " env_prefix" {
-  description = "string"
-  type = "dev"
+  description = "prefix to append to other variables"
+  type = "string"
   default=""
 }
 
 variable " instance_type" {
-  description = "string"
-  type = ""
+  description = "instance type for our jenkins server"
+  type = "string"
   default="t2.micro"
 }
