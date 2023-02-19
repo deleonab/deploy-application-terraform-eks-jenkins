@@ -149,3 +149,128 @@ output "ec2_public_ip" {
   value = aws_instance.myapp-server.public_ip
 }
 ```
+
+### Our providers will be in provider.tf
+### This will be aws in this case
+```
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+```
+
+### Let's create the vpc, public subnet, route table and internet gateway
+
+```
+resource "aws_vpc" "myapp-vpc" {
+  cidr_block = var.vpc_cidr_block
+  tags = {
+    Name = "${var.env_prefix}-vpc"
+  }
+}
+
+resource "aws_subnet" "myapp-subnet-1" {
+  vpc_id            = aws_vpc.myapp-vpc.id
+  cidr_block        = var.subnet_cidr_block
+  availability_zone = var.avail_zone
+  tags = {
+    Name = "${var.env_prefix}-subnet-1"
+  }
+}
+
+resource "aws_internet_gateway" "myapp-igw" {
+  vpc_id = aws_vpc.myapp-vpc.id
+  tags = {
+    Name = "${var.env_prefix}-igw"
+  }
+}
+
+resource "aws_default_route_table" "main-rtb" {
+  default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.myapp-igw.id
+  }
+  tags = {
+    Name = "${var.env_prefix}-main-rtb"
+  }
+}
+
+resource "aws_default_security_group" "default-sg" {
+  vpc_id = aws_vpc.myapp-vpc.id
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.env_prefix}-default-sg"
+  }
+}
+```
+
+### Next, we shall declare our variables in variables.tf
+
+```
+variable "avail_zone" {
+  description = ""
+  type = "string"
+  default=""
+}
+
+variable "subnet_cidr_block " {
+  description = "cidr block for the vpc"
+  type = ""
+  default="10.0.1.0/24"
+}
+
+variable "vpc_cidr_block " {
+  description = "cidr block for the subnet"
+  type = ""
+  default="10.0.0.0/16"
+}
+
+variable " env_prefix" {
+  description = "string"
+  type = "dev"
+  default=""
+}
+
+variable " instance_type" {
+  description = "string"
+  type = ""
+  default="t2.micro"
+}
+```
+
+#### Next, we shall assign values to the variables in terraform.tfvars
+
+```
+vpc_cidr_block      = "10.0.0.0/16"
+subnet_cidr_block   = "10.0.10.0/24"
+avail_zone          = "us-east-1a"
+env_prefix          = "dev"
+instance_type       = "t2.small"
+```
