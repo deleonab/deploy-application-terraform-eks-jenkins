@@ -1,6 +1,6 @@
 variable "avail_zone" {
   description = ""
-  type = "string"
+  type = string
   default=""
 }
 
@@ -16,12 +16,12 @@ variable "vpc_cidr_block " {
 
 variable " env_prefix" {
   description = "prefix to append to other variables"
-  type = "string"
+  type = string
   default=""
 }
 
 variable " instance_type" {
   description = "instance type for our jenkins server"
-  type = "string"
+  type = string
   default="t2.micro"
 }
