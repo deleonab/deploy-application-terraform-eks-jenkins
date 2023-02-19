@@ -274,3 +274,4 @@ avail_zone          = "us-east-1a"
 env_prefix          = "dev"
 instance_type       = "t2.small"
 ```
+#### End of variable declaration
