@@ -1,12 +1,12 @@
-resource "aws_vpc" "myapp-vpc" {
+resource "aws_vpc" "delesapp-vpc" {
   cidr_block = var.vpc_cidr_block
   tags = {
     Name = "${var.env_prefix}-vpc"
   }
 }
 
-resource "aws_subnet" "myapp-subnet-1" {
-  vpc_id            = aws_vpc.myapp-vpc.id
+resource "aws_subnet" "delesapp-subnet-1" {
+  vpc_id            = aws_vpc.delesapp-vpc.id
   cidr_block        = var.subnet_cidr_block
   availability_zone = var.avail_zone
   tags = {
@@ -14,26 +14,31 @@ resource "aws_subnet" "myapp-subnet-1" {
   }
 }
 
-resource "aws_internet_gateway" "myapp-igw" {
-  vpc_id = aws_vpc.myapp-vpc.id
+resource "aws_internet_gateway" "delesapp-igw" {
+  vpc_id = aws_vpc.delesapp-vpc.id
   tags = {
     Name = "${var.env_prefix}-igw"
   }
 }
 
-resource "aws_default_route_table" "main-rtb" {
-  default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
+
+
+resource "aws_route_table" "delesapp-rtb" {
+  vpc_id = aws_vpc.delesapp-vpc.id
+
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.myapp-igw.id
+    gateway_id = aws_internet_gateway.delesapp-igw.id
   }
+
   tags = {
-    Name = "${var.env_prefix}-main-rtb"
+    Name = "${var.env_prefix}-delesapp-rtb"
   }
 }
 
-resource "aws_default_security_group" "default-sg" {
-  vpc_id = aws_vpc.myapp-vpc.id
+
+resource "aws_security_group" "delesapp-sg" {
+  vpc_id = aws_vpc.delesapp-vpc.id
   ingress {
     from_port   = 22
     to_port     = 22
@@ -53,6 +58,6 @@ resource "aws_default_security_group" "default-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "${var.env_prefix}-default-sg"
+    Name = "${var.env_prefix}-delesapp-sg"
   }
 }
