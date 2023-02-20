@@ -11,12 +11,12 @@ data "aws_ami" "latest-amazon-linux-image" {
   }
 }
 
-resource "aws_instance" "myapp-server" {
+resource "aws_instance" "delesapp-server" {
   ami                         = data.aws_ami.latest-amazon-linux-image.id
   instance_type               = var.instance_type
   key_name                    = "jenkins-server"
-  subnet_id                   = aws_subnet.myapp-subnet-1.id
-  vpc_security_group_ids      = [aws_default_security_group.default-sg.id]
+  subnet_id                   = aws_subnet.delesapp-subnet-1.id
+  vpc_security_group_ids      = [aws_security_group.delesapp-sg.id]
   availability_zone           = var.avail_zone
   associate_public_ip_address = true
   user_data                   = file("jenkins-userdata.sh")
