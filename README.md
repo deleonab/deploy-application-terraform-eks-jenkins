@@ -320,3 +320,26 @@ cat ~/.aws/credentials
 ```
 sudo cat /var/lib/cloud/instances/i-02b6e76afbebcaceb/user-data.txt
 ```
+
+#### Log into Jenkins using your publicipaddress of the instance which is also the elastic ipaddress on port 8080
+```
+http://54.80.167.107:8080/
+```
+
+![jenkins password](./images/jenkins1.png)
+
+
+
+#### Get our default jenkins password in /var/lib/jenkins/secrets/initialAdminPassword
+```
+[ec2-user@ip-10-0-10-63 ~]$ cat /var/lib/jenkins/secrets/initialAdminPassword
+cat: /var/lib/jenkins/secrets/initialAdminPassword: Permission denied
+[ec2-user@ip-10-0-10-63 ~]$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+7552r846e2304d42ad0d48fh224331a0
+```
+
+![jenkins password](./images/jenkins2.png)
+![jenkins password](./images/jenkins3.png)
+![jenkins password](./images/jenkins4.png)
+![jenkins password](./images/jenkins5.png)
+![jenkins password](./images/jenkins6.png)
