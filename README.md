@@ -314,7 +314,8 @@ terraform appy
 
 cat ~/.aws/credentials
 
-###### Check userdata installation
+###### To check the contents of our userdata installation
+
 - SSH into instance
 ```
 sudo cat /var/lib/cloud/instances/i-02b6e76afbebcaceb/user-data.txt
