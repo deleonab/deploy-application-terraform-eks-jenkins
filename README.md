@@ -275,3 +275,26 @@ env_prefix          = "dev"
 instance_type       = "t2.small"
 ```
 #### End of variable declaration
+
+
+#### Let us test our infrastruture set up
+
+```
+terraform init
+```
+```
+terraform validate
+```
+```
+terraform plan
+```
+```
+terraform appy
+
+```
+
+![terraform apply1](./images/terrainfra1.png)
+
+
+
+cat ~/.aws/credentials
