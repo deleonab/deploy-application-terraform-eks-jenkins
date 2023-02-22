@@ -343,3 +343,12 @@ cat: /var/lib/jenkins/secrets/initialAdminPassword: Permission denied
 ![jenkins password](./images/jenkins4.png)
 ![jenkins password](./images/jenkins5.png)
 ![jenkins password](./images/jenkins6.png)
+
+#### Next, we shall add our github credentials to Jenkins.
+
+Manage Jenkins > Manage Credentials > Global > Add credentials
+
+
+
+
+
