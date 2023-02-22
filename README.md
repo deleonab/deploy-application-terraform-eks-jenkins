@@ -70,85 +70,6 @@ override.tf.json
 terraform.rc
 ```
 
-## 2.  Prepare the Jenkins Server using terraform and a userdata script(EC2)
-```
-touch jenkins-server.tf
-```
-## 
-```
-
-data "aws_ami" "latest-amazon-linux-image" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-```
-### provision ec2 with latest amzn2-ami-hvm-*-x86_64-gp2 image
-```
-resource "aws_instance" "myapp-server" {
-  ami                         = data.aws_ami.latest-amazon-linux-image.id
-  instance_type               = var.instance_type
-  key_name                    = "jenkins-server"
-  subnet_id                   = aws_subnet.myapp-subnet-1.id
-  vpc_security_group_ids      = [aws_default_security_group.default-sg.id]
-  availability_zone           = var.avail_zone
-  associate_public_ip_address = true
-  user_data                   = file("jenkins-userdata.sh")
-  tags = {
-    Name = "${var.env_prefix}-server"
-  }
-}
-
-```
-### Create userdata script for jenkins instance
-### This will install jenkins, git, java, terraform, and kubectl
-
-```
-#!/bin/bash
-
-# install jenkins 
-
-sudo yum update
-sudo wget -O /etc/yum.repos.d/jenkins.repo \
-    https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-sudo yum upgrade -y
-sudo amazon-linux-extras install java-openjdk11 -y
-sudo yum install jenkins -y
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
-
-# install git
-sudo yum install git -y
-
-# install terraform
-
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install terraform
-
-# install kubectl
-
-sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl
-sudo chmod +x ./kubectl
-sudo mkdir -p $HOME/bin && sudo cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-
-```
-
-### We will create outputs.tf to output the public ip address of our jenkins server
-
-```
-output "ec2_public_ip" {
-  value = aws_instance.myapp-server.public_ip
-}
-```
 
 ### Our providers will be in provider.tf
 ### This will be aws in this case
@@ -231,6 +152,100 @@ resource "aws_default_security_group" "default-sg" {
 }
 ```
 
+
+## 2.  Prepare the Jenkins Server using terraform and a userdata script(EC2)
+```
+touch jenkins-server.tf
+```
+## 
+```
+
+data "aws_ami" "latest-amazon-linux-image" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+```
+### provision ec2 with latest amzn2-ami-hvm-*-x86_64-gp2 image
+```
+resource "aws_instance" "myapp-server" {
+  ami                         = data.aws_ami.latest-amazon-linux-image.id
+  instance_type               = var.instance_type
+  key_name                    = "jenkins-server"
+  subnet_id                   = aws_subnet.myapp-subnet-1.id
+  vpc_security_group_ids      = [aws_default_security_group.default-sg.id]
+  availability_zone           = var.avail_zone
+  associate_public_ip_address = true
+  user_data                   = file("jenkins-userdata.sh")
+  tags = {
+    Name = "${var.env_prefix}-server"
+  }
+}
+
+```
+### Create userdata script for jenkins instance
+### This will install jenkins, git, java, terraform, and kubectl
+
+```
+#!/bin/bash
+
+# install jenkins 
+
+sudo yum update
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+sudo yum upgrade -y
+sudo amazon-linux-extras install java-openjdk11 -y
+sudo yum install jenkins -y
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+# install git
+sudo yum install git -y
+
+# install terraform
+
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+
+# install kubectl
+
+sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl
+sudo chmod +x ./kubectl
+sudo mkdir -p $HOME/bin && sudo cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+
+```
+#### We should add an elatic IP to our instance. This would endure that the instance public IP stays the same if we stop and start the instance. The public IP of an instance changes if the instance is stopped and restarted.
+
+```
+resource "aws_eip" "ip-test-env" {
+
+  instance = "${aws_instance.delesapp-server.id}"
+
+  vpc      = true
+
+}
+
+```
+### We will create outputs.tf to output the public ip address of our jenkins server
+
+```
+output "ec2_public_ip" {
+  value = aws_instance.myapp-server.public_ip
+}
+```
+
+
+
 ### Next, we shall declare our variables in variables.tf
 
 ```
@@ -298,3 +313,9 @@ terraform appy
 
 
 cat ~/.aws/credentials
+
+###### Check userdata installation
+- SSH into instance
+```
+sudo cat /var/lib/cloud/instances/i-02b6e76afbebcaceb/user-data.txt
+```

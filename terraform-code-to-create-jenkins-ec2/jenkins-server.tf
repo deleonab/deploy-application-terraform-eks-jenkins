@@ -24,3 +24,11 @@ resource "aws_instance" "delesapp-server" {
     Name = "${var.env_prefix}-server"
   }
 }
+
+resource "aws_eip" "ip-test-env" {
+
+  instance = "${aws_instance.delesapp-server.id}"
+
+  vpc      = true
+
+}
