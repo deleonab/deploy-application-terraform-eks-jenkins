@@ -348,6 +348,8 @@ cat: /var/lib/jenkins/secrets/initialAdminPassword: Permission denied
 
 Manage Jenkins > Manage Credentials > Global > Add credentials
 
+![Add Credentials](./images/addcredential1.png)
+
 
 
 
