@@ -350,6 +350,9 @@ Manage Jenkins > Manage Credentials > Global > Add credentials
 
 ![Add Credentials](./images/addcredential1.png)
 
+#### Next we shall add our AWS credentials
+
+
 
 
 
