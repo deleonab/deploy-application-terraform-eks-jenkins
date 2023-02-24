@@ -358,6 +358,10 @@ Manage Jenkins > Manage Credentials > Global > Add credentials
 
 ![jenkins secret](./images/jenkins-secrets.png)
 
+```
+mkdir kubernetes terraform
+```
+
 
 
 
