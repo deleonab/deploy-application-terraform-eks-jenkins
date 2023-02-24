@@ -352,6 +352,13 @@ Manage Jenkins > Manage Credentials > Global > Add credentials
 
 #### Next we shall add our AWS credentials
 
+![Jenkins cred](./images/jenkins-access-key-id.png)
+
+#### Screenshot of credentials 
+
+![jenkins secret](./images/jenkins-secrets.png)
+
+
 
 
 
