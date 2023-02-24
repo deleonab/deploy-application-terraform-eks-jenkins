@@ -358,6 +358,8 @@ Manage Jenkins > Manage Credentials > Global > Add credentials
 
 ![jenkins secret](./images/jenkins-secrets.png)
 
+### Let's start with the files to deploy in the kubernetes cluster
+#### make 2 directories, terraform and kubernetes
 ```
 mkdir kubernetes terraform
 ```
